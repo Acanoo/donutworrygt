@@ -201,6 +201,89 @@ export function GallerySection() {
     </button>
   );
 
+  const renderActiveSlide = () => (
+    <AnimatePresence mode="wait" custom={direction}>
+      <motion.div
+        key={`${activeSlide.type}-${activeSlide.src}`}
+        custom={direction}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.9}
+        onDragEnd={handleDragEnd}
+        style={{ touchAction: "pan-y" }}
+        initial={{
+          opacity: 0,
+          x: direction > 0 ? 120 : -120,
+          rotate: direction > 0 ? 26 : -26,
+          scale: 0.86
+        }}
+        animate={{
+          opacity: 1,
+          x: 0,
+          rotate: 0,
+          scale: 1
+        }}
+        exit={{
+          opacity: 0,
+          x: direction > 0 ? -120 : 120,
+          rotate: direction > 0 ? -26 : 26,
+          scale: 0.88
+        }}
+        transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0 cursor-grab active:cursor-grabbing"
+      >
+        {activeSlide.type === "video" ? (
+          <div
+            className="group relative h-full w-full overflow-hidden"
+            data-protected-media="true"
+            onContextMenu={(event) => event.preventDefault()}
+          >
+            <video
+              ref={videoRef}
+              src={activeSlide.src}
+              className="protected-media h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls={false}
+              preload="metadata"
+              disablePictureInPicture
+              controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
+              onContextMenu={(event) => event.preventDefault()}
+            />
+            <WatermarkOverlay />
+            <div className="absolute left-5 top-5 inline-flex items-center rounded-full bg-blush px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-lg">
+              Spot promocional
+            </div>
+            <button
+              type="button"
+              onClick={() => setMuted((current) => !current)}
+              className="absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/92 px-3 py-2 text-xs font-semibold text-cocoa shadow-lg transition-transform duration-300 hover:-translate-y-1"
+              aria-label={muted ? "Activar sonido" : "Silenciar video"}
+            >
+              {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              {muted ? "Activar sonido" : "Silenciar"}
+            </button>
+          </div>
+        ) : (
+          renderImageSlide(activeSlide.src, activeSlide.title)
+        )}
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-cocoa/75 via-cocoa/20 to-transparent px-4 pb-4 pt-14 text-white sm:px-6 sm:pb-6 sm:pt-16">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75 sm:text-xs sm:tracking-[0.28em]">
+            {activeSlide.eyebrow}
+          </p>
+          <p className="mt-2 max-w-lg text-lg font-semibold sm:mt-3 sm:text-2xl">
+            {activeSlide.type === "video"
+              ? activeSlide.title
+              : "Mini donas, detalles y momentos que venden por si solos"}
+          </p>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
+
   return (
     <>
       <section id="galeria" className="section-space overflow-hidden">
@@ -216,92 +299,117 @@ export function GallerySection() {
 
           <Reveal delay={0.08} className="mt-12">
             <div className="relative rounded-[2.4rem] border border-white/65 bg-[linear-gradient(180deg,rgba(255,247,242,0.95)_0%,rgba(253,234,242,0.92)_100%)] p-4 shadow-glow sm:p-6">
-              <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+              <div className="space-y-5 lg:hidden">
+                <div className="rounded-[1.8rem] border border-white/60 bg-white/80 p-4 shadow-card">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blush">
+                    Carrusel visual
+                  </p>
+                  <p className="mt-2 text-xl font-semibold leading-tight text-cocoa">
+                    Galeria compacta para explorar en movil
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-cocoa/70">
+                    Desliza con el dedo o usa las miniaturas para ver fotos y video sin perder
+                    detalle.
+                  </p>
+                </div>
+
+                <div className="relative overflow-hidden rounded-[1.8rem] bg-white shadow-card">
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(248,168,200,0.32),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(217,166,90,0.2),transparent_25%)]" />
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem]">
+                    {renderActiveSlide()}
+                  </div>
+                  <div className="absolute inset-y-0 left-2 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => goPrev(true)}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/92 text-cocoa shadow-lg backdrop-blur"
+                      aria-label="Slide anterior"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div className="absolute inset-y-0 right-2 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => goNext(true)}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/92 text-cocoa shadow-lg backdrop-blur"
+                      aria-label="Siguiente slide"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="rounded-[1.6rem] border border-white/60 bg-white/80 p-3 shadow-card">
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {carouselSlides.map((slide, index) => (
+                      <button
+                        key={`${slide.type}-${slide.src}-mobile-dot`}
+                        type="button"
+                        onClick={() => goToSlide(index, true)}
+                        className={`h-2.5 rounded-full transition-all duration-300 ${
+                          index === currentIndex ? "w-9 bg-blush" : "w-2.5 bg-blush/25"
+                        }`}
+                        aria-label={`Ir al slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-3 overflow-x-auto pb-1">
+                    {carouselSlides.map((slide, index) => (
+                      <button
+                        key={`${slide.type}-${slide.src}-mobile-thumb`}
+                        type="button"
+                        onClick={() => goToSlide(index, true)}
+                        className={`group min-w-[7.25rem] overflow-hidden rounded-[1.2rem] border p-2 text-left shadow-sm transition-all duration-300 ${
+                          index === currentIndex
+                            ? "border-blush bg-blush/8 shadow-md"
+                            : "border-white/70 bg-white"
+                        }`}
+                      >
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-[0.9rem]">
+                          {slide.type === "video" ? (
+                            <>
+                              <video
+                                src={slide.src}
+                                className="h-full w-full object-cover"
+                                muted
+                                playsInline
+                                preload="metadata"
+                              />
+                              <div className="absolute inset-0 flex items-center justify-center bg-cocoa/15">
+                                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-cocoa shadow-lg">
+                                  <Play className="ml-0.5 h-3.5 w-3.5" />
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            <Image
+                              src={slide.src}
+                              alt={slide.title}
+                              fill
+                              quality={36}
+                              className="object-cover"
+                            />
+                          )}
+                        </div>
+                        <div className="px-1 pb-1 pt-2">
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-cocoa/45">
+                            {slide.type === "video" ? "Video" : `Foto ${index + 1}`}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="hidden gap-6 lg:grid lg:grid-cols-[1.15fr_0.85fr]">
                 <div className="flex flex-col gap-4">
                   <div className="relative overflow-hidden rounded-[2rem] bg-white shadow-card">
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(248,168,200,0.32),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(217,166,90,0.2),transparent_25%)]" />
 
                     <div className="relative aspect-[4/4.8] overflow-hidden rounded-[2rem]">
-                      <AnimatePresence mode="wait" custom={direction}>
-                        <motion.div
-                          key={`${activeSlide.type}-${activeSlide.src}`}
-                          custom={direction}
-                          drag="x"
-                          dragConstraints={{ left: 0, right: 0 }}
-                          dragElastic={0.9}
-                          onDragEnd={handleDragEnd}
-                          style={{ touchAction: "pan-y" }}
-                          initial={{
-                            opacity: 0,
-                            x: direction > 0 ? 120 : -120,
-                            rotate: direction > 0 ? 26 : -26,
-                            scale: 0.86
-                          }}
-                          animate={{
-                            opacity: 1,
-                            x: 0,
-                            rotate: 0,
-                            scale: 1
-                          }}
-                          exit={{
-                            opacity: 0,
-                            x: direction > 0 ? -120 : 120,
-                            rotate: direction > 0 ? -26 : 26,
-                            scale: 0.88
-                          }}
-                          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-                          className="absolute inset-0 cursor-grab active:cursor-grabbing"
-                        >
-                          {activeSlide.type === "video" ? (
-                            <div
-                              className="group relative h-full w-full overflow-hidden"
-                              data-protected-media="true"
-                              onContextMenu={(event) => event.preventDefault()}
-                            >
-                              <video
-                                ref={videoRef}
-                                src={activeSlide.src}
-                                className="protected-media h-full w-full object-cover"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                controls={false}
-                                preload="metadata"
-                                disablePictureInPicture
-                                controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
-                                onContextMenu={(event) => event.preventDefault()}
-                              />
-                              <WatermarkOverlay />
-                              <div className="absolute left-5 top-5 inline-flex items-center rounded-full bg-blush px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-lg">
-                                Spot promocional
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => setMuted((current) => !current)}
-                                className="absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/92 px-3 py-2 text-xs font-semibold text-cocoa shadow-lg transition-transform duration-300 hover:-translate-y-1"
-                                aria-label={muted ? "Activar sonido" : "Silenciar video"}
-                              >
-                                {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                                {muted ? "Activar sonido" : "Silenciar"}
-                              </button>
-                            </div>
-                          ) : (
-                            renderImageSlide(activeSlide.src, activeSlide.title)
-                          )}
-
-                          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-cocoa/75 via-cocoa/20 to-transparent px-6 pb-6 pt-16 text-white">
-                            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/75">
-                              {activeSlide.eyebrow}
-                            </p>
-                            <p className="mt-3 max-w-lg text-2xl font-semibold">
-                              {activeSlide.type === "video"
-                                ? activeSlide.title
-                                : "Mini donas, detalles y momentos que venden por si solos"}
-                            </p>
-                          </div>
-                        </motion.div>
-                      </AnimatePresence>
+                      {renderActiveSlide()}
                     </div>
 
                     <div className="absolute inset-y-0 left-3 flex items-center">
