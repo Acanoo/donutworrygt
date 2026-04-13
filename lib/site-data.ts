@@ -124,6 +124,10 @@ export function buildProductWhatsappUrl(productTitle: string, priceLabel: string
   return `https://wa.me/50234682894?text=${message}`;
 }
 
+export function buildWhatsappFormUrl(message: string) {
+  return `https://wa.me/50234682894?text=${encodeURIComponent(message)}`;
+}
+
 export const businessUseCases = [
   { title: "Coffee breaks", icon: Coffee },
   { title: "Eventos corporativos", icon: BriefcaseBusiness },

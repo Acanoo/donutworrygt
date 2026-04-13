@@ -2,7 +2,12 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { Package2, ShoppingBag, Sparkles, X } from "lucide-react";
-import { buildProductWhatsappUrl, products, type Product } from "@/lib/site-data";
+import {
+  buildProductWhatsappUrl,
+  buildWhatsappFormUrl,
+  products,
+  type Product
+} from "@/lib/site-data";
 import { ButtonLink } from "@/components/ui/button-link";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
 import { ProtectedImageTile } from "@/components/ui/protected-image-tile";
@@ -36,22 +41,28 @@ function ProductQuoteModal({
 }) {
   const [form, setForm] = useState<QuoteState>(initialQuoteState);
 
-  const mailtoHref = useMemo(() => {
+  const whatsappHref = useMemo(() => {
     if (!product) {
       return "#";
     }
 
-    const subject = encodeURIComponent(`Cotizacion de ${product.title}`);
-    const body = encodeURIComponent(
-      `Producto: ${product.title}\nPrecio referencial: ${product.priceLabel}\nNombre: ${form.nombre}\nEmpresa: ${form.empresa}\nTelefono: ${form.telefono}\nCorreo: ${form.correo}\nCantidad solicitada: ${form.cantidad}\nMensaje: ${form.mensaje}`
-    );
+    const message =
+      `Hola DonutWorry_GT, quiero cotizar este producto.\n` +
+      `Producto: ${product.title}\n` +
+      `Precio referencial: ${product.priceLabel}\n` +
+      `Nombre: ${form.nombre}\n` +
+      `Empresa: ${form.empresa}\n` +
+      `Telefono: ${form.telefono}\n` +
+      `Correo: ${form.correo}\n` +
+      `Cantidad solicitada: ${form.cantidad}\n` +
+      `Mensaje: ${form.mensaje}`;
 
-    return `mailto:donutworrygt@gmail.com?subject=${subject}&body=${body}`;
+    return buildWhatsappFormUrl(message);
   }, [form, product]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.href = mailtoHref;
+    window.open(whatsappHref, "_blank", "noopener,noreferrer");
   };
 
   if (!product) {
@@ -88,7 +99,10 @@ function ProductQuoteModal({
             ["Correo", "correo", "email"],
             ["Cantidad", "cantidad", "number"]
           ].map(([label, name, type]) => (
-            <label key={name} className={`text-sm font-medium ${name === "cantidad" ? "sm:col-span-2" : ""}`}>
+            <label
+              key={name}
+              className={`text-sm font-medium ${name === "cantidad" ? "sm:col-span-2" : ""}`}
+            >
               <span className="mb-2 block text-cocoa">{label}</span>
               <input
                 type={type}
@@ -117,7 +131,7 @@ function ProductQuoteModal({
                 }))
               }
               className="w-full rounded-2xl border border-blush/20 bg-cream px-4 py-3 outline-none transition-colors focus:border-blush"
-              placeholder="Cuentalos detalles de tu pedido o evento."
+              placeholder="Cuentanos los detalles de tu pedido o evento."
             />
           </label>
 
@@ -128,7 +142,11 @@ function ProductQuoteModal({
             >
               Enviar cotizacion
             </button>
-            <ButtonLink href={buildProductWhatsappUrl(product.title, product.priceLabel)} target="_blank" variant="secondary">
+            <ButtonLink
+              href={buildProductWhatsappUrl(product.title, product.priceLabel)}
+              target="_blank"
+              variant="secondary"
+            >
               Consultar por WhatsApp
             </ButtonLink>
           </div>
