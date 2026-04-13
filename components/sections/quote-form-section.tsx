@@ -54,7 +54,7 @@ export function QuoteFormSection() {
                 Si tu pedido es urgente o ya tienes claros los volumenes, puedes escribirnos y
                 avanzar mas rapido.
               </p>
-              <ButtonLink href={whatsappUrl} target="_blank" className="mt-5 bg-white text-cocoa">
+              <ButtonLink href={whatsappUrl} target="_blank" variant="whatsapp" className="mt-5">
                 WhatsApp
               </ButtonLink>
             </div>
@@ -117,7 +117,7 @@ export function QuoteFormSection() {
                 >
                   Solicitar cotizacion
                 </button>
-                <ButtonLink href={whatsappUrl} target="_blank" variant="secondary">
+                <ButtonLink href={whatsappUrl} target="_blank" variant="whatsapp">
                   WhatsApp
                 </ButtonLink>
               </div>
