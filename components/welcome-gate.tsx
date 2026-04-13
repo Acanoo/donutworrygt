@@ -37,8 +37,8 @@ export function WelcomeGate({ onEnter }: WelcomeGateProps) {
             Mini donas que enamoran
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-8 text-cocoa/80">
-            Pedidos para empresas y eventos con una presentación moderna, dulce y lista para
-            sorprender.
+            Mini donas pensadas para vender, compartir y sorprender en empresas, eventos y
+            celebraciones, con una presentacion dulce, moderna y lista para dejar huella.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button

@@ -17,8 +17,9 @@ export function FooterSection() {
             </div>
           </div>
           <p className="mt-5 max-w-md text-sm leading-7 text-cocoa/70">
-            Diseñado para convertir visitas en cotizaciones con una propuesta visual premium, clara
-            y enfocada en ventas empresariales.
+            Mini donas artesanales en Guatemala, hechas para sorprender en cada bocado.
+            Perfectas para eventos, empresas y celebraciones, con presentaciones irresistibles y
+            servicio personalizado que convierte cualquier ocasion en algo especial.
           </p>
         </div>
 

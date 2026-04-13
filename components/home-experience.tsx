@@ -15,6 +15,7 @@ import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { ProcessSection } from "@/components/sections/process-section";
 import { QuoteFormSection } from "@/components/sections/quote-form-section";
 import { FooterSection } from "@/components/sections/footer-section";
+import { ScrollDonut } from "@/components/scroll-donut";
 
 export function HomeExperience() {
   const [entered, setEntered] = useState(false);
@@ -79,6 +80,7 @@ export function HomeExperience() {
             <ProcessSection />
             <QuoteFormSection />
             <FooterSection />
+            <ScrollDonut />
             <FloatingWhatsApp />
           </motion.main>
         )}

@@ -193,7 +193,9 @@ export function CatalogSection() {
                             })}
                           </div>
                         ) : null}
-                        <p className="mt-3 text-sm leading-7 text-cocoa/70">{product.description}</p>
+                        <p className="mt-3 line-clamp-4 text-sm leading-7 text-cocoa/70">
+                          {product.description}
+                        </p>
                       </div>
                       <div className="shrink-0 rounded-2xl bg-blush-bg px-4 py-2 text-right">
                         <p className="text-xs uppercase tracking-[0.22em] text-cocoa/55">Precio</p>
