@@ -116,9 +116,18 @@ export const products: Product[] = [
   }
 ];
 
-export function buildProductWhatsappUrl(productTitle: string, priceLabel: string) {
+export function buildProductWhatsappUrl(
+  productTitle: string,
+  priceLabel: string,
+  packageDetails?: string[]
+) {
+  const packageLine =
+    packageDetails && packageDetails.length > 0
+      ? `\nIncluye: ${packageDetails.join(" · ")}`
+      : "";
+
   const message = encodeURIComponent(
-    `Hola DonutWorry_GT, quiero solicitar este producto:\nProducto: ${productTitle}\nPrecio: ${priceLabel}\nQuiero mas informacion y disponibilidad.`
+    `Hola DonutWorry_GT, quiero solicitar este producto:\nProducto: ${productTitle}\nPrecio: ${priceLabel}${packageLine}\nQuiero mas informacion y disponibilidad.`
   );
 
   return `https://wa.me/50234682894?text=${message}`;

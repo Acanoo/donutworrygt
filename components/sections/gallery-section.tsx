@@ -403,12 +403,12 @@ export function GallerySection() {
                 </div>
               </div>
 
-              <div className="hidden gap-6 lg:grid lg:grid-cols-[1.15fr_0.85fr]">
+              <div className="hidden gap-5 lg:grid lg:grid-cols-[minmax(0,1.12fr)_minmax(16rem,18rem)] lg:items-start xl:gap-6">
                 <div className="flex flex-col gap-4">
                   <div className="relative overflow-hidden rounded-[2rem] bg-white shadow-card">
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(248,168,200,0.32),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(217,166,90,0.2),transparent_25%)]" />
 
-                    <div className="relative aspect-[4/4.8] overflow-hidden rounded-[2rem]">
+                    <div className="relative h-[min(62vh,42rem)] overflow-hidden rounded-[2rem] xl:h-[min(68vh,46rem)]">
                       {renderActiveSlide()}
                     </div>
 
@@ -466,7 +466,7 @@ export function GallerySection() {
                           key={`${slide.type}-${slide.src}-thumb`}
                           type="button"
                           onClick={() => goToSlide(index, true)}
-                          className={`group relative min-w-[8.75rem] overflow-hidden rounded-[1.3rem] border p-2 text-left shadow-sm transition-all duration-300 ${
+                          className={`group relative min-w-[7.5rem] overflow-hidden rounded-[1.3rem] border p-2 text-left shadow-sm transition-all duration-300 xl:min-w-[8.75rem] ${
                             index === currentIndex
                               ? "border-blush bg-blush/8 shadow-md"
                               : "border-white/70 bg-white hover:-translate-y-1"
@@ -512,7 +512,7 @@ export function GallerySection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 lg:max-w-[18rem]">
                   <div className="rounded-[1.8rem] border border-white/60 bg-white/80 p-5 shadow-card">
                     <p className="text-sm font-semibold uppercase tracking-[0.26em] text-blush">
                       Carrusel visual

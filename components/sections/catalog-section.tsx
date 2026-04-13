@@ -143,7 +143,11 @@ function ProductQuoteModal({
               Enviar cotizacion
             </button>
             <ButtonLink
-              href={buildProductWhatsappUrl(product.title, product.priceLabel)}
+              href={buildProductWhatsappUrl(
+                product.title,
+                product.priceLabel,
+                product.packageDetails
+              )}
               target="_blank"
               variant="secondary"
             >
@@ -230,7 +234,11 @@ export function CatalogSection() {
                         Cotizar
                       </button>
                       <ButtonLink
-                        href={buildProductWhatsappUrl(product.title, product.priceLabel)}
+                        href={buildProductWhatsappUrl(
+                          product.title,
+                          product.priceLabel,
+                          product.packageDetails
+                        )}
                         target="_blank"
                         className="w-full"
                       >
